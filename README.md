@@ -1,5 +1,10 @@
 # RepoFlow
 
+![CI](https://github.com/repoflow-labs/repoflow-contract/actions/workflows/ci.yml/badge.svg)
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Soroban](https://img.shields.io/badge/soroban--sdk-22-blueviolet)
+![Network](https://img.shields.io/badge/network-Stellar-black)
+
 GitHub Repository Claiming & Dependency Funding Graph Protocol for Stellar
 
 ## Technical Architecture Overview
@@ -115,7 +120,7 @@ cargo test --manifest-path contracts/repoflow/Cargo.toml
 
 # Deploy to local network
 stellar contract deploy \
-  --wasm target/wasm32-unknown-unknown/release/repoflow.wasm \
+  --wasm target/wasm32v1-none/release/repoflow.wasm \
   --source alice \
   --network local
 
@@ -172,7 +177,7 @@ NEXT_PUBLIC_STELLAR_NETWORK=local
 |-----------|------------|---------|
 | Language | Rust | 1.77+ |
 | Framework | Soroban SDK | latest (soroban-sdk crate) |
-| WASM Target | `wasm32-unknown-unknown` | stable |
+| WASM Target | `wasm32v1-none` | stable |
 | Build Tool | Cargo | 1.77+ |
 
 ### Backend
@@ -218,9 +223,9 @@ NEXT_PUBLIC_STELLAR_NETWORK=local
 
 ```toml
 [dependencies]
-soroban-sdk = { version = "20.0.0", features = ["wasm-utils"] }
-soroban-sdk-macros = "20.0.0"
-stellar-xdr = { version = "20.0.0", features = ["serde", "json"] }
+soroban-sdk = "22"
+soroban-sdk-macros = "22"
+stellar-xdr = "22"
 ```
 
 ### Key Dependencies (package.json - frontend)

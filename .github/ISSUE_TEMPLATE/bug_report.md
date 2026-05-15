@@ -33,6 +33,8 @@ milestone: ''
 | OS | |
 | Node.js | |
 | Rust | |
+| Soroban SDK | |
+| stellar-cli | |
 | Docker | |
 | Network | (local/testnet/mainnet) |
 

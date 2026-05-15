@@ -11,7 +11,7 @@ Click the "Fork" button on the repository page. This creates your own copy of th
 ```bash
 git clone https://github.com/YOUR_USERNAME/repoflow-contract.git
 cd repoflow-contract
-git remote add upstream https://github.com/dripsnetwork/repoflow-contract.git
+git remote add upstream https://github.com/repoflow-labs/repoflow-contract.git
 ```
 
 ### 3. Create a Feature Branch
