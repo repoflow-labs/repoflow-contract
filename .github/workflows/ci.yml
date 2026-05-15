@@ -55,3 +55,6 @@ jobs:
 
       - name: Run tests
         run: cargo test --manifest-path contracts/repoflow/Cargo.toml
+
+      - name: wasm build
+        run: cargo build --release --target wasm32v1-none --manifest-path contracts/repoflow/Cargo.toml

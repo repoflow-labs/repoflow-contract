@@ -1,20 +1,21 @@
 [package]
-name = "repoflow"
+name = "repoflow-contract"
 version = "0.1.0"
 edition = "2021"
 
 [lib]
-crate-type = ["cdylib", "rlib"]
+crate-type = ["cdylib"]
 
 [dependencies]
-soroban-sdk = "22"
+soroban-sdk = { version = "22", features = ["alloc"] }
+
+[dev-dependencies]
+soroban-sdk = { version = "22", features = ["testutils"] }
 
 [profile.release]
 opt-level = "z"
 overflow-checks = true
+debug = false
 strip = true
 lto = true
 codegen-units = 1
-
-[profile.dev]
-opt-level = 0

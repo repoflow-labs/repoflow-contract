@@ -76,7 +76,7 @@ GitHub Repository Claiming & Dependency Funding Graph Protocol for Stellar
 
 ```bash
 # Clone repository
-git clone https://github.com/dripsnetwork/repoflow-contract.git
+git clone https://github.com/repoflow-labs/repoflow-contract.git
 cd repoflow-contract
 
 # Install Rust dependencies
