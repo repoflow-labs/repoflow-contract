@@ -1,8 +1,5 @@
 #![no_std]
-use soroban_sdk::{
-    contract, contractimpl, contracterror, contracttype,
-    Address, BytesN, Env, Vec,
-};
+use soroban_sdk::{contract, contracterror, contractimpl, contracttype, Address, BytesN, Env, Vec};
 
 // ── Storage Keys ─────────────────────────────────────────────────────────────
 // RepoClaim   → Persistent  (user funds; must never expire)
@@ -47,12 +44,12 @@ pub struct SplitEntry {
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 #[repr(u32)]
 pub enum Error {
-    AlreadyClaimed      = 1,
-    NonceReused         = 2,
-    InvalidWeights      = 3,
+    AlreadyClaimed = 1,
+    NonceReused = 2,
+    InvalidWeights = 3,
     TooManyDependencies = 4,
-    Unauthorized        = 5,
-    RepoNotFound        = 6,
+    Unauthorized = 5,
+    RepoNotFound = 6,
 }
 
 // ── Contract ──────────────────────────────────────────────────────────────────
@@ -66,9 +63,9 @@ impl RepoFlow {
     /// `proof_nonce`: HMAC-SHA256 nonce verified off-chain by the backend.
     /// `owner`: Stellar address asserting ownership; must authorize this call.
     pub fn claim_repo(
-        env: Env,
-        github_url_hash: BytesN<32>,
-        proof_nonce: BytesN<32>,
+        _env: Env,
+        _github_url_hash: BytesN<32>,
+        _proof_nonce: BytesN<32>,
         owner: Address,
     ) -> Result<(), Error> {
         owner.require_auth();
@@ -78,9 +75,9 @@ impl RepoFlow {
     /// Declare weighted dependency graph for a claimed repo.
     /// `deps`: max 50 entries; sum of weight_bps must equal 10_000.
     pub fn set_dependency_split(
-        env: Env,
-        repo_id: BytesN<32>,
-        deps: Vec<SplitEntry>,
+        _env: Env,
+        _repo_id: BytesN<32>,
+        _deps: Vec<SplitEntry>,
     ) -> Result<(), Error> {
         unimplemented!()
     }
@@ -88,21 +85,17 @@ impl RepoFlow {
     /// Deposit tokens into a repo's funding vault.
     /// Proportionally disperses to declared dependencies.
     pub fn fund_repo(
-        env: Env,
-        repo_id: BytesN<32>,
-        token: Address,
-        amount: i128,
+        _env: Env,
+        _repo_id: BytesN<32>,
+        _token: Address,
+        _amount: i128,
     ) -> Result<(), Error> {
         unimplemented!()
     }
 
     /// Pull accrued vault earnings to the verified repo owner.
     /// Returns the amount transferred.
-    pub fn claim_earnings(
-        env: Env,
-        repo_id: BytesN<32>,
-        owner: Address,
-    ) -> Result<i128, Error> {
+    pub fn claim_earnings(_env: Env, _repo_id: BytesN<32>, owner: Address) -> Result<i128, Error> {
         owner.require_auth();
         unimplemented!()
     }
