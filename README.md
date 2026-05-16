@@ -1,6 +1,5 @@
 # RepoFlow
 
-![CI](https://github.com/repoflow-labs/repoflow-contract/actions/workflows/ci.yml/badge.svg)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Soroban](https://img.shields.io/badge/soroban--sdk-22-blueviolet)
 ![Network](https://img.shields.io/badge/network-Stellar-black)
