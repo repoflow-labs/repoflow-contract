@@ -3,6 +3,7 @@
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Soroban](https://img.shields.io/badge/soroban--sdk-22-blueviolet)
 ![Network](https://img.shields.io/badge/network-Stellar-black)
+[![Deployed](https://img.shields.io/badge/futurenet-deployed-success)](https://futurenet.stellar.expert/contract/CBAK7SEF7V6CHIZL4GJLJYEL44N3SIUMJXFFE7IGPLAXAR5MTLWFANRW)
 
 GitHub Repository Claiming & Dependency Funding Graph Protocol for Stellar
 
@@ -119,9 +120,11 @@ cargo test --manifest-path contracts/repoflow/Cargo.toml
 
 # Deploy to local network
 stellar contract deploy \
-  --wasm target/wasm32v1-none/release/repoflow.wasm \
-  --source alice \
-  --network local
+  --wasm target/wasm32v1-none/release/repoflow_contract.wasm \
+  --source repoflow-deployer-new \
+  --network futurenet
+
+Live contract: https://futurenet.stellar.expert/contract/CBAK7SEF7V6CHIZL4GJLJYEL44N3SIUMJXFFE7IGPLAXAR5MTLWFANRW
 
 # Invoke contract locally
 stellar contract invoke \
