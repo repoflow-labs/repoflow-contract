@@ -1,8 +1,4 @@
 # RepoFlow
-[![CI](https://github.com/repoflow-labs/repoflow-contract/actions/workflows/ci.yml/badge.svg)](https://github.com/repoflow-labs/repoflow-contract/actions)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Soroban](https://img.shields.io/badge/soroban--sdk-22-blueviolet)](https://crates.io/crates/soroban-sdk)
-[![Network](https://img.shields.io/badge/network-Stellar-black)](https://stellar.org)
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Soroban](https://img.shields.io/badge/soroban--sdk-22-blueviolet)
