@@ -1,5 +1,8 @@
 #![no_std]
-use soroban_sdk::{contract, contracterror, contractimpl, contracttype, Address, BytesN, Env, Vec};
+use soroban_sdk::{contract, contracterror, contractimpl, contracttype, Address, BytesN, Env, Symbol, Vec};
+
+#[cfg(test)]
+mod test;
 
 // ── Storage Keys ─────────────────────────────────────────────────────────────
 // RepoClaim   → Persistent  (user funds; must never expire)
@@ -58,28 +61,77 @@ pub struct RepoFlow;
 
 #[contractimpl]
 impl RepoFlow {
-    /// Claim ownership of a GitHub repository on-chain.
-    /// `github_url_hash`: SHA-256 of canonical repo URL.
-    /// `proof_nonce`: HMAC-SHA256 nonce verified off-chain by the backend.
-    /// `owner`: Stellar address asserting ownership; must authorize this call.
     pub fn claim_repo(
-        _env: Env,
-        _github_url_hash: BytesN<32>,
-        _proof_nonce: BytesN<32>,
+        env: Env,
+        github_url_hash: BytesN<32>,
+        proof_nonce: BytesN<32>,
         owner: Address,
     ) -> Result<(), Error> {
         owner.require_auth();
-        unimplemented!()
+
+        if env.storage().temporary().has(&DataKey::ProofNonce(proof_nonce.clone())) {
+            return Err(Error::NonceReused);
+        }
+
+        if env.storage().persistent().has(&DataKey::RepoClaim(github_url_hash.clone())) {
+            return Err(Error::AlreadyClaimed);
+        }
+
+        let claim = RepoClaim {
+            owner: owner.clone(),
+            github_hash: github_url_hash.clone(),
+            claimed_at: env.ledger().timestamp(),
+        };
+
+        env.storage().persistent().set(&DataKey::RepoClaim(github_url_hash.clone()), &claim);
+        env.storage().persistent().extend_ttl(
+            &DataKey::RepoClaim(github_url_hash.clone()),
+            3_110_400,
+            3_110_400,
+        );
+
+        env.storage().temporary().set(&DataKey::ProofNonce(proof_nonce.clone()), &());
+        env.storage().temporary().extend_ttl(
+            &DataKey::ProofNonce(proof_nonce),
+            17_280,
+            17_280,
+        );
+
+        env.events().publish((Symbol::new(&env, "RepoClaimed"), github_url_hash), owner);
+
+        Ok(())
     }
 
-    /// Declare weighted dependency graph for a claimed repo.
-    /// `deps`: max 50 entries; sum of weight_bps must equal 10_000.
     pub fn set_dependency_split(
-        _env: Env,
-        _repo_id: BytesN<32>,
-        _deps: Vec<SplitEntry>,
+        env: Env,
+        repo_id: BytesN<32>,
+        deps: Vec<SplitEntry>,
     ) -> Result<(), Error> {
-        unimplemented!()
+        let claim: RepoClaim = env.storage().persistent()
+            .get(&DataKey::RepoClaim(repo_id.clone()))
+            .ok_or(Error::RepoNotFound)?;
+
+        claim.owner.require_auth();
+
+        if deps.len() > 50 {
+            return Err(Error::TooManyDependencies);
+        }
+
+        let sum: u32 = deps.iter().map(|d| d.weight_bps).sum();
+        if sum != 10_000 {
+            return Err(Error::InvalidWeights);
+        }
+
+        env.storage().persistent().set(&DataKey::RepoSplit(repo_id.clone()), &deps);
+        env.storage().persistent().extend_ttl(
+            &DataKey::RepoSplit(repo_id.clone()),
+            3_110_400,
+            3_110_400,
+        );
+
+        env.events().publish((Symbol::new(&env, "SplitSet"), repo_id), deps);
+
+        Ok(())
     }
 
     /// Deposit tokens into a repo's funding vault.
