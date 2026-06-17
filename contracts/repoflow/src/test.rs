@@ -39,8 +39,14 @@ fn test_dependency_split_success() {
 
     let deps = soroban_sdk::vec![
         &env,
-        SplitEntry { dep_repo_id: dummy_hash(&env, 3), weight_bps: 6000 },
-        SplitEntry { dep_repo_id: dummy_hash(&env, 4), weight_bps: 4000 },
+        SplitEntry {
+            dep_repo_id: dummy_hash(&env, 3),
+            weight_bps: 6000
+        },
+        SplitEntry {
+            dep_repo_id: dummy_hash(&env, 4),
+            weight_bps: 4000
+        },
     ];
 
     client.set_dependency_split(&repo_id, &deps);
@@ -58,7 +64,8 @@ fn test_claim_repo_stores_data() {
     client.claim_repo(&hash, &nonce, &owner);
 
     let stored: RepoClaim = env.as_contract(&contract_id, || {
-        env.storage().persistent()
+        env.storage()
+            .persistent()
             .get(&DataKey::RepoClaim(hash))
             .unwrap()
     });
@@ -94,9 +101,9 @@ fn test_nonce_not_in_persistent() {
     client.claim_repo(&hash1, &nonce1, &owner);
 
     let stored: bool = env.as_contract(&contract_id, || {
-        env.storage().persistent().has(&DataKey::ProofNonce(
-            dummy_hash(&env, 2),
-        ))
+        env.storage()
+            .persistent()
+            .has(&DataKey::ProofNonce(dummy_hash(&env, 2)))
     });
     assert!(!stored);
 }

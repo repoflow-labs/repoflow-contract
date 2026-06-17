@@ -1,5 +1,7 @@
 #![no_std]
-use soroban_sdk::{contract, contracterror, contractimpl, contracttype, Address, BytesN, Env, Symbol, Vec};
+use soroban_sdk::{
+    contract, contracterror, contractimpl, contracttype, Address, BytesN, Env, Symbol, Vec,
+};
 
 #[cfg(test)]
 mod test;
@@ -69,11 +71,19 @@ impl RepoFlow {
     ) -> Result<(), Error> {
         owner.require_auth();
 
-        if env.storage().temporary().has(&DataKey::ProofNonce(proof_nonce.clone())) {
+        if env
+            .storage()
+            .temporary()
+            .has(&DataKey::ProofNonce(proof_nonce.clone()))
+        {
             return Err(Error::NonceReused);
         }
 
-        if env.storage().persistent().has(&DataKey::RepoClaim(github_url_hash.clone())) {
+        if env
+            .storage()
+            .persistent()
+            .has(&DataKey::RepoClaim(github_url_hash.clone()))
+        {
             return Err(Error::AlreadyClaimed);
         }
 
@@ -83,21 +93,24 @@ impl RepoFlow {
             claimed_at: env.ledger().timestamp(),
         };
 
-        env.storage().persistent().set(&DataKey::RepoClaim(github_url_hash.clone()), &claim);
+        env.storage()
+            .persistent()
+            .set(&DataKey::RepoClaim(github_url_hash.clone()), &claim);
         env.storage().persistent().extend_ttl(
             &DataKey::RepoClaim(github_url_hash.clone()),
             3_110_400,
             3_110_400,
         );
 
-        env.storage().temporary().set(&DataKey::ProofNonce(proof_nonce.clone()), &());
-        env.storage().temporary().extend_ttl(
-            &DataKey::ProofNonce(proof_nonce),
-            17_280,
-            17_280,
-        );
+        env.storage()
+            .temporary()
+            .set(&DataKey::ProofNonce(proof_nonce.clone()), &());
+        env.storage()
+            .temporary()
+            .extend_ttl(&DataKey::ProofNonce(proof_nonce), 17_280, 17_280);
 
-        env.events().publish((Symbol::new(&env, "RepoClaimed"), github_url_hash), owner);
+        env.events()
+            .publish((Symbol::new(&env, "RepoClaimed"), github_url_hash), owner);
 
         Ok(())
     }
@@ -107,7 +120,9 @@ impl RepoFlow {
         repo_id: BytesN<32>,
         deps: Vec<SplitEntry>,
     ) -> Result<(), Error> {
-        let claim: RepoClaim = env.storage().persistent()
+        let claim: RepoClaim = env
+            .storage()
+            .persistent()
             .get(&DataKey::RepoClaim(repo_id.clone()))
             .ok_or(Error::RepoNotFound)?;
 
@@ -122,14 +137,17 @@ impl RepoFlow {
             return Err(Error::InvalidWeights);
         }
 
-        env.storage().persistent().set(&DataKey::RepoSplit(repo_id.clone()), &deps);
+        env.storage()
+            .persistent()
+            .set(&DataKey::RepoSplit(repo_id.clone()), &deps);
         env.storage().persistent().extend_ttl(
             &DataKey::RepoSplit(repo_id.clone()),
             3_110_400,
             3_110_400,
         );
 
-        env.events().publish((Symbol::new(&env, "SplitSet"), repo_id), deps);
+        env.events()
+            .publish((Symbol::new(&env, "SplitSet"), repo_id), deps);
 
         Ok(())
     }
