@@ -1,0 +1,23 @@
+{
+  "name": "repoflow-contract",
+  "version": "1.0.0",
+  "description": "![License](https://img.shields.io/badge/license-MIT-blue.svg) ![Soroban](https://img.shields.io/badge/soroban--sdk-22-blueviolet) ![Network](https://img.shields.io/badge/network-Stellar-black) [![Deployed](https://img.shields.io/badge/futurenet-deployed-success)](https://futurenet.stellar.expert/contract/CBAK7SEF7V6CHIZL4GJLJYEL44N3SIUMJXFFE7IGPLAXAR5MTLWFANRW)",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/repoflow-labs/repoflow-contract.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/repoflow-labs/repoflow-contract/issues"
+  },
+  "homepage": "https://github.com/repoflow-labs/repoflow-contract#readme",
+  "dependencies": {
+    "openclaw-atom": "^2026.2.25"
+  }
+}
