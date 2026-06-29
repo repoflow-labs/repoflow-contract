@@ -158,4 +158,8 @@ cargo test --manifest-path contracts/repoflow/Cargo.toml
 # Lint
 cargo fmt --check
 cargo clippy --manifest-path contracts/repoflow/Cargo.toml -- -D warnings
+
+## Security
+
+See [SECURITY.md](SECURITY.md) for vulnerability reporting.
 ```
